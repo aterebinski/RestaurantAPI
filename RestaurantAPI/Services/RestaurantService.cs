@@ -42,7 +42,11 @@ namespace RestaurantAPI.Services
 
         public IEnumerable<RestaurantDTO> GetAll()
         {
-            var restaurants = _dbContext.Restaurants.ToList();
+            var restaurants = _dbContext
+                .Restaurants
+                .Include(a => a.Address)
+                .Include(a => a.Dishes)
+                .ToList();
             var restaurantsDto = _mapper.Map<List<RestaurantDTO>>(restaurants);
             return restaurantsDto;
         }

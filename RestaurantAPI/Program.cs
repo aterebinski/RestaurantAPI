@@ -20,6 +20,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<RestaurantService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IDishService, DishService>();
 
 var app = builder.Build();
 

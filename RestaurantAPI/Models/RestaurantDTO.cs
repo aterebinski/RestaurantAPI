@@ -11,7 +11,7 @@
         public string Street { get; set; }
         public string PostalCode { get; set; }
 
-        List<DishDTO> dishes { get; set; }
+        public List<DishDTO> dishes { get; set; }
 
     }
 }

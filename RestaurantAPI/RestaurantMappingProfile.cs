@@ -19,9 +19,11 @@ namespace RestaurantAPI
                 {
                     City = c.City, PostalCode = c.PostalCode, Street = c.Street
                 }));
-                //.ForMember(r => r.Address.Street, c => c.MapFrom(z => z.Street))
-                //.ForMember(r => r.Address.City, z => z.MapFrom(c => c.City))
-                //.ForMember(r => r.Address.PostalCode, z => z.MapFrom(c => c.PostalCode));
+            //.ForMember(r => r.Address.Street, c => c.MapFrom(z => z.Street))
+            //.ForMember(r => r.Address.City, z => z.MapFrom(c => c.City))
+            //.ForMember(r => r.Address.PostalCode, z => z.MapFrom(c => c.PostalCode));
+
+            CreateMap<CreateDishDTO, Dish>();
         }
     }
 }
