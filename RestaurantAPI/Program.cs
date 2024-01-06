@@ -1,8 +1,12 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using NLog.Web;
 using RestaurantAPI;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Middleware;
+using RestaurantAPI.Models;
+using RestaurantAPI.Models.Validators;
 using RestaurantAPI.Services;
 using System.Reflection;
 
@@ -24,6 +28,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserDTOValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserDTOValidator>(ServiceLifetime.Transient);
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
 
 var app = builder.Build();
 
