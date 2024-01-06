@@ -24,6 +24,8 @@ namespace RestaurantAPI
             //.ForMember(r => r.Address.PostalCode, z => z.MapFrom(c => c.PostalCode));
 
             CreateMap<CreateDishDTO, Dish>();
+            CreateMap<RegisterUserDTO, User>()
+                .ForMember(m=>m.PasswordHash,c=>c.MapFrom(z=>z.Password));
         }
     }
 }
