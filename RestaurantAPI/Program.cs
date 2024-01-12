@@ -50,6 +50,8 @@ builder.Services.AddAuthorization(option =>
         builder => builder.RequireClaim("Nationality", "German","Polish"));
     option.AddPolicy("AtLeast20", 
         builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
+    option.AddPolicy("Owner",
+        builder => builder.AddRequirements(new ResourceOperationRequirement()));
 });
 
 builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
