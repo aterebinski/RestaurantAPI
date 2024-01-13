@@ -6,6 +6,7 @@ using RestaurantAPI.Entities;
 using RestaurantAPI.Models;
 using RestaurantAPI.Services;
 using System.Linq;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Controllers
 {
@@ -41,22 +42,23 @@ namespace RestaurantAPI.Controllers
         [HttpPost]
         public ActionResult CreateRestautant([FromBody] CreateRestaurantDTO dto)
         {
-            int restaurantId = _service.Create(dto);
+            int userId = int.Parse(User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value);
+            int restaurantId = _service.Create(dto, userId);
             return Created($"/api/restaurant/{restaurantId}", null);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute]int id)
+        public ActionResult Delete([FromRoute]int id, ClaimsPrincipal user)
         {
-            _service.Delete(id);
+            _service.Delete(id, User);
                 return NoContent();
 
         }
 
         [HttpPut("{Id}")]
-        public ActionResult Update([FromBody] RestaurantDTO dto, [FromRoute] int Id)
+        public ActionResult Update([FromBody] RestaurantDTO dto, [FromRoute] int Id, ClaimsPrincipal user)
         {
-            _service.Update(Id, dto);
+            _service.Update(Id, dto, User);
             return Ok();
         }
     }

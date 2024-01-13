@@ -2,7 +2,7 @@
 
 namespace RestaurantAPI.Authorization
 {
-    public enum ResourceOperation
+    public enum ResourceOperationType
     {
         Create,
         Delete,
@@ -12,9 +12,9 @@ namespace RestaurantAPI.Authorization
 
     public class ResourceOperationRequirement : IAuthorizationRequirement
     {
-        public ResourceOperation ResourceOperation { get; }
+        public ResourceOperationType ResourceOperation { get; }
 
-        public ResourceOperationRequirement(ResourceOperation resourceOperation) 
+        public ResourceOperationRequirement(ResourceOperationType resourceOperation) 
         { 
             ResourceOperation = resourceOperation;
         }
