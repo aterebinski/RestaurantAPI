@@ -56,6 +56,9 @@ builder.Services.AddAuthorization(option =>
 builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 
+builder.Services.AddScoped<IUserContextService,  UserContextService>();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantDbContext>();
 builder.Services.AddScoped<RestaurantSeeder>();
