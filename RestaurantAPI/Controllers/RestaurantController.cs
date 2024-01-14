@@ -21,7 +21,7 @@ namespace RestaurantAPI.Controllers
             _service = restaurantService;
         }
 
-        
+        [Authorize(Policy = "AtLeast2RestaurantsCreatedByUser")]
         [HttpGet]
         public ActionResult<IEnumerable<RestaurantDTO>> GetAll()
         {
