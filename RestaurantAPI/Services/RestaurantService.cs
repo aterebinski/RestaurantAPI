@@ -6,6 +6,8 @@ using RestaurantAPI.Authorization;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Exceptions;
 using RestaurantAPI.Models;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace RestaurantAPI.Services
@@ -52,12 +54,28 @@ namespace RestaurantAPI.Services
 
         public PageResult<RestaurantDTO> GetAll(RestaurantQuery query)
         {
-            //todo SkończyLem na 49 Paginacja o 16:50
             var baseQuery = _dbContext
                 .Restaurants
                 .Include(a => a.Address)
                 .Include(a => a.Dishes)
                 .Where(i => query.SearchPhrase == null || i.Name.ToLower().Contains(query.SearchPhrase.ToLower()) || i.Name.ToLower().Contains(query.SearchPhrase.ToLower()));
+
+            if(!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnSelectors = new Dictionary<string, Expression<Func<Restaurant, object>>>() 
+                {
+                    { nameof(Restaurant.Name), r=>r.Name},
+                    { nameof(Restaurant.Description), r=>r.Description},
+                    { nameof(Restaurant.Category), r=>r.Category},
+                };
+
+                var selectedColumn = columnSelectors[query.SortBy];
+
+                baseQuery = query.SortDirection == SortDirection.ASC ?
+                    baseQuery.OrderBy(selectedColumn) :
+                    baseQuery.OrderByDescending(selectedColumn);
+            };
+
 
             var restaurants = baseQuery
                 .Skip(query.PageSize * (query.PageNumber - 1))
