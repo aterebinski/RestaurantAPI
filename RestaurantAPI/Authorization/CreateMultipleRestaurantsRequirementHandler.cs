@@ -14,7 +14,6 @@ namespace RestaurantAPI.Authorization
         }
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CreateMultipleRestaurantsRequirement requirement)
         {
-            //todo skończyłem 46 na 3:30
             int userId = int.Parse(context.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value);
 
             int howManyRestaurantsCreatedByUser = _dbContext.Restaurants
