@@ -24,6 +24,7 @@ var authenticationSettings = new AuthenticationSettings();
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
 
+
 // Add services to the container.
 
 builder.Services.AddSingleton(authenticationSettings);
@@ -43,6 +44,7 @@ builder.Services.AddAuthentication(option =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
     };
 });
+
 
 builder.Services.AddAuthorization(option =>
 {
@@ -77,8 +79,20 @@ builder.Services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator
 //builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserDTOValidator>(ServiceLifetime.Transient);
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontEndClient", policyBuilder =>
+        policyBuilder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            //.AllowAnyOrigin()
+            .WithOrigins(builder.Configuration["AllowedOrigins"])
+    );
+});
 
 var app = builder.Build();
+
+app.UseCors("FrontEndClient");
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
