@@ -20,8 +20,6 @@ namespace RestaurantAPI.Controllers
                 return NotFound();
             }
 
-            
-
             var contentType = new FileExtensionContentTypeProvider();
             contentType.TryGetContentType(FileName, out var mimeType);
 
@@ -29,5 +27,28 @@ namespace RestaurantAPI.Controllers
 
             return File(fileContents,mimeType,FileName);
         }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Upload([FromForm] IFormFile file)
+        {
+            if(file != null && file.Length > 0) 
+            {
+                var rootPath = Directory.GetCurrentDirectory();
+                var fileName = file.FileName;
+                var filePath = $"{rootPath}/PrivateFiles/{fileName}";
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                };
+
+                return Ok();
+            }
+            else 
+            { 
+                return BadRequest(); 
+            }
+        }
+
     }
 }
