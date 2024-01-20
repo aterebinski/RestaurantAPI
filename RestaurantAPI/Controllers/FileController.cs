@@ -8,7 +8,7 @@ namespace RestaurantAPI.Controllers
     public class FileController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [ResponseCache(Duration = 1200, VaryByQueryKeys = new[] {"FileName" })]
         public ActionResult GetFile([FromQuery] string FileName)
         {
             var rootPath = Directory.GetCurrentDirectory();
